@@ -6,9 +6,10 @@ with SHA-256 via `hashlib`, and verifying credentials on login.
 The registry.csv has the following columns:name,account_id,password_hash
 """
 
-import random as r
+import uuid
 import pandas as pd
 import os
+import hashlib
 
 class Authentacion():
 
@@ -75,17 +76,45 @@ class Authentacion():
         else:
             print(f"The Registry have been created and is not empty at: {self.file_path}")
             return True
+        
+    def create_account_id(self) -> str :
+        """Created an Account Id and returns it as a String.
 
-    #TODO: Add hashing for password and also account name creation and backcheck
-    #FIXME: Not done yet
+        Returns:
+            str: Newly Created Account Id
+        """
+        account_id = str(uuid.uuid4())
+                
+        return account_id
+    
+    def create_account_database(self, account_id : str):
+        pass
+        
+        
     def add_entitity(self):
 
         df_registry = pd.read_csv(self.file_path)
-
-
-        new_client = {'name': self.client_name,
-                      'account_name': "",
-                      'password':""}
+        
+        exists = True
+        
+        while exists:
+            account_id = self.create_account_id()
+        
+            exists =  df_registry.account_id.isin([account_id]).any()
+            
+        else:
+            
+            before_hash_password = self.password
+            hashed_password = hashlib.sha256(before_hash_password.encode()).hexdigest()
+            
+            
+            new_client = {'name': self.client_name,
+                        'account_id': account_id,
+                        'password':hashed_password}
+            
+            df_registry.loc[len(df_registry)] = new_client
+            
+            df_registry.to_csv(self.file_path)
 
 if __name__ == '__main__':
 
