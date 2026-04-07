@@ -87,7 +87,9 @@ class Authentacion():
                 
         return account_id
     
-    def create_account_database(self, account_id : str):
+    #TODO: Make the database created at the path based on with the account name
+    def create_account_database(self, account_id : str) -> bool:
+        
         pass
         
         
