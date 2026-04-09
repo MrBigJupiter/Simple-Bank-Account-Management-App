@@ -59,7 +59,14 @@ class Authentacion(Storage):
         return True
     
     def check_client_username(self, name: str) -> bool:
-        
+        """Check if a new entry is being made with the same client name.
+
+        Args:
+            name (str): name of the client
+
+        Returns:
+            bool: True if the new entry does not exist
+        """
         df_registry = pd.read_csv(self.registry_file_path)
         res = df_registry.isin([name]).any().any()
         
@@ -113,7 +120,7 @@ class Authentacion(Storage):
 
 if __name__ == '__main__':
 
-    new_entity = Authentacion("test", "test1")
+    new_entity = Authentacion("test2", "test2")
     new_entity.check_registry()
     new_entity.add_entitity()
 
