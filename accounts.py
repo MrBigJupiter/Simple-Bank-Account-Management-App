@@ -24,3 +24,6 @@ class Account(Authentacion):
     
     def display_transaction_history(self):
         pass
+    
+    def yearly_line(self):
+        pass
