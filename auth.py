@@ -21,8 +21,12 @@ class Authentacion():
         self.folder_path = "./data"
         self.file_path = os.path.join(self.folder_path, self.registry_file_name)
 
-    def create_database(self):
+    def create_database(self) -> bool:
+        """Create the Registry database if it does not exsist. If it exists returns True with a message.
 
+        Returns:
+            bool: If the registry exists or if it has been created
+        """
         is_created = False
 
         if os.path.exists(self.file_path):
@@ -37,8 +41,12 @@ class Authentacion():
                 return is_created
 
     
-    def check_database(self):
+    def check_database(self) -> bool:
+        """Check if the Registry is completaly empty. If it is empty populates it with the columns stated in the README.md
 
+        Returns:
+            bool: Returns True if it either empyt and has been added columns or it is not empty and has columns
+        """
         is_empty = False
 
         try:
@@ -63,8 +71,12 @@ class Authentacion():
             return is_empty # If columns have been created than True
                 
         
-    def check_registry(self):
+    def check_registry(self) -> bool:
+        """Main function for the registry backcheck and column creation.
 
+        Returns:
+            bool: If it has been created or it it already there and has columns
+        """
         is_created = self.create_database()
         is_empty = self.check_database()
 
@@ -87,14 +99,35 @@ class Authentacion():
                 
         return account_id
     
-    #TODO: Make the database created at the path based on with the account name
     def create_account_database(self, account_id : str) -> bool:
-        
-        pass
-        
-        
-    def add_entitity(self):
+        """Create the Account of the new Registry entry (new client).
 
+        Args:
+            account_id (str): Created account Id for the New Registry entry.
+
+        Returns:
+            bool: Account with the Account ID has been created at the ./data/accounts
+        """
+        account_file_path = "./data/accounts"
+        file_name = account_id + ".csv"
+        create_account = os.path.join(account_file_path, file_name)
+        
+        account_columns = ['date', 'description', 'amount', 'balance']
+        
+        df_new_account = pd.DataFrame(columns=account_columns)
+        
+        df_new_account.to_csv(create_account)
+        
+        print(f"Account with Id: {account_id} has been created at: {create_account}")
+        
+        return True
+        
+    def add_entitity(self) -> bool:
+        """Add new entitty and create a new account .csv. In encapsulates the back checks too.
+
+        Returns:
+            bool: If the new Entity has been added to the Registry and the account has been created.
+        """
         df_registry = pd.read_csv(self.file_path)
         
         exists = True
@@ -112,15 +145,19 @@ class Authentacion():
             
             new_client = {'name': self.client_name,
                         'account_id': account_id,
-                        'password':hashed_password}
+                        'password_hash':hashed_password}
             
             df_registry.loc[len(df_registry)] = new_client
             
             df_registry.to_csv(self.file_path)
+            
+            df_account = self.create_account_database(account_id = account_id)
+            
+        return True
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
 
-    test = Authentacion("test", "test1")
-    test.check_registry()
-
+ #   new_entity = Authentacion("test", "test1")
+ #   new_entity.check_registry()
+ #   new_entity.add_entitity()
 
