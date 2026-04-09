@@ -56,16 +56,13 @@ with SHA-256 via `hashlib`, and verifying credentials on login.
 Contains the core banking operations. This covers depositing and withdrawing funds (positive and negative
 balance updates), changing the account holder's name, and displaying the full transaction history
 as a formatted Pandas DataFrame. Each transaction is appended as a new row with a recalculated running balance.
+Loads a user's transaction history and plots the balance over time as a Seaborn line chart.
+Gives a quick visual overview of how the account balance has changed across transactions.
 
 ### `storage.py`
 A helper module responsible for all CSV read and write operations. Keeps file I/O logic in one place
 so the other modules stay clean. Manages both the shared `registry.csv` and the individual
 per-account CSV files stored under `data/accounts/`.
-
-### `visualize.py`
-Loads a user's transaction history and plots the balance over time as a Seaborn line chart.
-Gives a quick visual overview of how the account balance has changed across transactions.
-
 ---
 
 ## 📂 Data Storage
