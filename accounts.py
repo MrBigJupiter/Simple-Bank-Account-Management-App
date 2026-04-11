@@ -10,10 +10,10 @@ from auth import Authentacion
 
 class Account(Authentacion):
     
-    def __init__(self):
-        pass 
+    def __init__(self, client_name: str, password: str):
+        super().__init__(client_name, password)
     
-    def update_balance(self):
+    def update_balance(self, account_id: str):
         pass
     
     def withdraw_balance(self):

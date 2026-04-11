@@ -16,10 +16,7 @@ class Storage():
         self.password = password
         self.registry_file_name = "registry.csv"
         self.folder_path = "./data"
-        self.registry_file_path = os.path.join(self.folder_path, self.registry_file_name)
-        
-    def get_account_id(self):
-        pass    
+        self.registry_file_path = os.path.join(self.folder_path, self.registry_file_name)   
     
     def create_database(self) -> bool:
         """Create the Registry database if it does not exsist. If it exists returns True with a message.

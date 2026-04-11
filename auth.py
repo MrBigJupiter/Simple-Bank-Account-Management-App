@@ -58,6 +58,11 @@ class Authentacion(Storage):
         
         return True
     
+    def get_account_id(self, in_registry: bool, client_name: str, ) -> str:
+        
+        #if in_registry:
+        pass 
+    
     def check_client_username(self, name: str) -> bool:
         """Check if a new entry is being made with the same client name.
 
@@ -118,9 +123,9 @@ class Authentacion(Storage):
                 
             return True
 
-if __name__ == '__main__':
+#if __name__ == '__main__':
 
-    new_entity = Authentacion("test2", "test2")
-    new_entity.check_registry()
-    new_entity.add_entitity()
+#  new_entity = Authentacion("test2", "test2")
+#  new_entity.check_registry()
+#  new_entity.add_entitity()
 
