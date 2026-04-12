@@ -154,6 +154,5 @@ class Authentacion(Storage):
 
 # if __name__ == '__main__':
     
-#     new_entity = Authentacion("test2", "test2")
-#     new_entity.get_account_id("test2", "test2")
+#     pass
 

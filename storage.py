@@ -84,3 +84,17 @@ class Storage():
         else:
             print(f"The Registry have been created and is not empty at: {self.registry_file_path}")
             return True
+        
+    def account_file_path_creation(self, account_id: str) -> str:
+        """Return the full file path of the Account database
+
+        Args:
+            account_id (str): Account Id as a string
+
+        Returns:
+            str: File path to the account database of the user.
+        """
+        account_id_file = f"{account_id}.csv"
+        account_file_path = self.registry_file_path = os.path.join(self.folder_path, account_id_file)
+        
+        return account_file_path
