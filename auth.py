@@ -12,7 +12,6 @@ import os
 import hashlib
 from storage import Storage 
 
-# FIXME: BACK CHECK CLIENT NAMES BEFORE CREATING NEW ONES
 class Authentacion(Storage):
 
     def __init__(self, client_name: str, password: str) -> None:
@@ -34,6 +33,18 @@ class Authentacion(Storage):
         account_id = str(uuid.uuid4())
                 
         return account_id
+    
+    def hash_password(self, before_hash_password: str) -> str:
+        """Hashed the given password and returns it.
+
+        Args:
+            before_hash_password (str): Given password for the user not hashed as a string.
+
+        Returns:
+            str: String of the hashed password
+        """
+        hashed_password = hashlib.sha256(before_hash_password.encode()).hexdigest()
+        return hashed_password
     
     def create_account_database(self, account_id : str) -> bool:
         """Create the Account of the new Registry entry (new client).
@@ -57,12 +68,7 @@ class Authentacion(Storage):
         print(f"Account with Id: {account_id} has been created at: {create_account}")
         
         return True
-    
-    def get_account_id(self, in_registry: bool, client_name: str, ) -> str:
         
-        #if in_registry:
-        pass 
-    
     def check_client_username(self, name: str) -> bool:
         """Check if a new entry is being made with the same client name.
 
@@ -76,7 +82,7 @@ class Authentacion(Storage):
         res = df_registry.isin([name]).any().any()
         
         in_registry = False
-        
+
         if res:
             print(f"An entry with the username: {name} has already been added to the registry.")
             in_registry = True
@@ -84,6 +90,29 @@ class Authentacion(Storage):
         else:
             print(f"New entry has been added to the registry with the username: {name}")
             return in_registry
+        
+    def get_account_id(self, client_name: str, password: str) -> str:
+        """Return the account id based on the correct password and client combination. Checks if an account exist with this combination in the registry.
+
+        Args:
+            client_name (str): Username of the created client.
+            password (str): Not hashed password of the user account
+
+        Returns:
+            str: Account id of the user account.
+        """
+        account_id = None # If the acccount is none existent than we return no accoun id
+        hashed_password = self.hash_password(password)
+        
+        in_registry = self.check_client_username(name= client_name)
+        if in_registry:
+            df_registry = pd.read_csv(self.registry_file_path)
+            account_id = df_registry['account_id'][(df_registry['name'] == client_name) & (df_registry['password_hash'] == hashed_password)]
+            print(f"There is a Account id with the given username in the registry.")
+            return account_id
+        else:   
+            print(f"There is no account with this client name and password.")         
+            return account_id
         
     def add_entitity(self) -> bool:
         """Add new entitty and create a new account .csv. In encapsulates the back checks too.
@@ -108,7 +137,7 @@ class Authentacion(Storage):
             else:
                 
                 before_hash_password = self.password
-                hashed_password = hashlib.sha256(before_hash_password.encode()).hexdigest()
+                hashed_password = self.hash_password(before_hash_password= before_hash_password)
                 
                 
                 new_client = {'name': self.client_name,
@@ -123,9 +152,8 @@ class Authentacion(Storage):
                 
             return True
 
-#if __name__ == '__main__':
-
-#  new_entity = Authentacion("test2", "test2")
-#  new_entity.check_registry()
-#  new_entity.add_entitity()
+# if __name__ == '__main__':
+    
+#     new_entity = Authentacion("test2", "test2")
+#     new_entity.get_account_id("test2", "test2")
 
