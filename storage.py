@@ -94,7 +94,9 @@ class Storage():
         Returns:
             str: File path to the account database of the user.
         """
+        
+        account_folder_path = "./data/accounts"
         account_id_file = f"{account_id}.csv"
-        account_file_path = self.registry_file_path = os.path.join(self.folder_path, account_id_file)
+        account_file_path = self.registry_file_path = os.path.join(account_folder_path, account_id_file)
         
         return account_file_path
